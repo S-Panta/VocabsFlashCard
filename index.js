@@ -1,5 +1,5 @@
 const express = require('express')
-// const path = require('path')
+const path = require('path')
 const mongoose = require('mongoose')
 const authRoute = require('./routes/authRoute')
 const app = express()
@@ -23,6 +23,8 @@ mongoose.connect(dbURI)
     console.log('Database connected')
   })
   .catch((err) => console.log(err))
+
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`)

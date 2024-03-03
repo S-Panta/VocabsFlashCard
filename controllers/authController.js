@@ -1,27 +1,9 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
-const secretKey = 'f4568a2e06b0158bd954a8da2a62d8d0d98244077af7aa19e3784ef501277683'
-
-const authenticateMiddleware = (req, res, next) => {
-  const token = req.headers.authorization
-  console.log(token)
-  if (!token) {
-    return res.status(401).send('Access Denied.')
-  }
-  try {
-    req.user = jwt.verify(token, secretKey)
-    next()
-  } catch (error) {
-    res.status(400).send('Invalid Token.')
-    res.redirect('/login')
-  }
-}
-
-const getUser = (req, res) => {
-  console.log(req.headers)
-}
+const secretKey = process.env.SECRET_KEY
 
 const getErrorMessage = (error) => {
   const errors = { }
@@ -43,7 +25,8 @@ const generateToken = (user) => {
   return jwt.sign({ user }, secretKey, { expiresIn: '1h' })
 }
 const getLoginPage = (req, res) => {
-  res.send('login page  is on')
+  res.render('loginPage')
+  res.send('login page is on')
 }
 
 const authenticateUser = async (req, res) => {
@@ -54,6 +37,7 @@ const authenticateUser = async (req, res) => {
     if (validatePassword) {
       const token = generateToken(validateUser._id)
       res.header('Authorization', token).send({ Authorization: token })
+      // console.log(res.get('Authorization'))
     } else {
       res.status(401).json({ error: 'Password mismatch' })
     }
@@ -71,8 +55,8 @@ const registerNewUser = async (req, res) => {
 
   try {
     const user = await User.create({
-      email: email,
-      password: password
+      email,
+      password
     })
     res.status(201).json(user)
   } catch (err) {
@@ -85,7 +69,5 @@ module.exports = {
   getLoginPage,
   authenticateUser,
   getSignUpPage,
-  registerNewUser,
-  authenticateMiddleware,
-  getUser
+  registerNewUser
 }
