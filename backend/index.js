@@ -2,17 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const authRoute = require('./routes/authRoute')
 const app = express()
+const cors = require('cors')
 
-const username = process.env.DB_USERNAME
-const password = process.env.DB_PASSWORD
 const port = process.env.PORT
-
-const dbURI = `mongodb+srv://${username}:${password}@cluster0.y1mqked.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const dbURI = process.env.dbURI
 
 // application-level middleware : instance of the app object
 app.use(express.json())
 app.use(authRoute)
-
+app.use(cors())
 // connect to database
 mongoose.connect(dbURI)
   .then(() => {
