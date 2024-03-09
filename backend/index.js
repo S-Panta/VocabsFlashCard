@@ -1,30 +1,27 @@
 const express = require('express')
-const path = require('path')
 const mongoose = require('mongoose')
 const authRoute = require('./routes/authRoute')
 const app = express()
 
-const port = 3000
-const dbURI = 'mongodb://127.0.0.1:27017/user'
+const username = process.env.DB_USERNAME
+const password = process.env.DB_PASSWORD
+const port = process.env.PORT
 
-// set the view engine to ejs
-app.set('view engine', 'ejs')
+const dbURI = `mongodb+srv://${username}:${password}@cluster0.y1mqked.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
 
-// middlewares
+// application-level middleware : instance of the app object
 app.use(express.json())
 app.use(authRoute)
 
-app.get('/home', (req, res) => {
-  res.send('Hello World')
-})
-
+// connect to database
 mongoose.connect(dbURI)
   .then(() => {
     console.log('Database connected')
   })
-  .catch((err) => console.log(err))
-
-app.use('/static', express.static(path.join(__dirname, 'public')))
+  .catch((err) => {
+    console.log(dbURI)
+    console.log(err)
+  })
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}`)
