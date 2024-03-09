@@ -3,6 +3,11 @@ const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, 'Please enter valid username ']
+  },
+
   email: {
     type: String,
     lowercase: true,
@@ -27,20 +32,8 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-// user defined method
-
-// userSchema.statics.login = async (email, password) => {
-//   const user = await this.findOne({ email })
-//   if (user) {
-//     const auth = await bcrypt.compare(password, user.password)
-//     if (auth) {
-//       return user
-//     }
-//     throw Error('incorrect password')
-//   }
-//   throw Error('Email not registered')
-// }
-
+// Eslint disabled to fix this message
+// A constructor name should not start with a lowercase letter
 // eslint-disable-next-line new-cap
 const User = new mongoose.model('user', userSchema)
 module.exports = User
