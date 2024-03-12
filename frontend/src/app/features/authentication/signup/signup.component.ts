@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import { Component, OnInit } from '@angular/core'
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms'
 
 @Component({
   selector: 'app-signup',
@@ -9,19 +10,18 @@ import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent implements OnInit {
-  signupForm: any;
+  signupForm: any
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor (private readonly formBuilder: FormBuilder) { }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.signupForm = this.formBuilder.group({
       email: [''],
       password: ['']
-    });
+    })
   }
 
-  signup() {
-    throw new Error('Method not implemented.');
+  signup (): Error {
+    throw new Error('Method not implemented.')
   }
-
 }

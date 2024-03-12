@@ -19,7 +19,6 @@ mongoose.connect(dbURI)
     console.log('Database connected')
   })
   .catch((err) => {
-    console.log(dbURI)
     console.log(err)
   })
 
