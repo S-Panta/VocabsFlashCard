@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { AuthService } from '../../../services/auth.service'
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -11,7 +11,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 export class LoginComponent implements OnInit{
   loginForm: any;
 
-constructor(private formBuilder: FormBuilder) { }
+constructor(private formBuilder: FormBuilder, private  authService: AuthService) { }
 
 ngOnInit(): void {
   this.loginForm = this.formBuilder.group({
@@ -21,7 +21,7 @@ ngOnInit(): void {
 
 }
 login() {
-throw new Error('Method not implemented.');
+  this.authService.login(this.loginForm)
 }
 
 }
