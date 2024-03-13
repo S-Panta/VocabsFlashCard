@@ -22,6 +22,10 @@ export class AuthService {
     )
   }
 
+  signup (username: string, email: string, password: string, confirmPassword: string): Observable<any> {
+    return this.http.post(`${this.url}/signup`, { username, email, password, confirmPassword })
+  }
+
   logout (): void {
     localStorage.removeItem('token')
   }
