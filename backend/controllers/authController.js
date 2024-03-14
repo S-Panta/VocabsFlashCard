@@ -25,6 +25,15 @@ const generateToken = (user) => {
   return jwt.sign({ user }, secretKey, { expiresIn: '1h' })
 }
 
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     description: login user
+ *     responses:
+ *       200:
+ *         description: Authorization token
+ */
 const authenticateUser = async (req, res) => {
   const { username, password } = req.body
   const validateUser = await User.findOne({ username })
@@ -42,6 +51,15 @@ const authenticateUser = async (req, res) => {
   }
 }
 
+/**
+ * @swagger
+ * /api/signup:
+ *   post:
+ *     description: signup new user
+ *     responses:
+ *       201:
+ *         description: Created
+ */
 const registerNewUser = async (req, res) => {
   const { username, email, password } = req.body
   try {
