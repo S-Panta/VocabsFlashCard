@@ -1,17 +1,19 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const authRoute = require('./routes/authRoute')
-const app = express()
+const swaggerUi = require('swagger-ui-express')
+const specs = require('./swagger')
 const cors = require('cors')
 
 const port = process.env.PORT
 const dbURI = process.env.dbURI
 
-// application-level middleware : instance of the app object
+const app = express()
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.use(express.json())
 app.use(authRoute)
 app.use(cors())
-// connect to database
+
 mongoose.connect(dbURI)
   .then(() => {
     console.log('Database connected')
