@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
-
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+import { Component, OnInit } from '@angular/core'
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms'
+import { AuthService } from '../../../api/services/auth.service'
+import { Router } from '@angular/router'
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -9,19 +11,33 @@ import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent implements OnInit {
-  signupForm: any;
+  signupForm: any
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor (
+    private readonly formBuilder: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly router: Router) { }
 
-  ngOnInit(): void {
+  ngOnInit (): void {
     this.signupForm = this.formBuilder.group({
+      username: [''],
       email: [''],
-      password: ['']
-    });
+      password: [''],
+      confirm_password: ['']
+    })
   }
 
-  signup() {
-    throw new Error('Method not implemented.');
+  signup (): void {
+    const username: string = this.signupForm.get('username').value
+    const email: string = this.signupForm.get('email').value
+    const password: string = this.signupForm.get('password').value
+    this.authService.signup(username, email, password).subscribe({
+      next: data => {
+        void this.router.navigate(['/login'])
+      },
+      error: err => {
+        throw new Error(err)
+      }
+    })
   }
-
 }

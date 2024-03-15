@@ -4,6 +4,7 @@ const authRoute = require('./routes/authRoute')
 const swaggerUi = require('swagger-ui-express')
 const specs = require('./swagger')
 const cors = require('cors')
+require('dotenv').config()
 
 const port = process.env.PORT
 const dbURI = process.env.dbURI
@@ -19,7 +20,6 @@ mongoose.connect(dbURI)
     console.log('Database connected')
   })
   .catch((err) => {
-    console.log(dbURI)
     console.log(err)
   })
 
