@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 import { Component, type OnInit } from '@angular/core'
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { AuthService } from '../../../services/auth.service'
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { AuthService } from '../../../api/services/auth.service'
 import { Router } from '@angular/router'
 
 @Component({
@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
       username: [''],
       password: ['']
     })
-    this.authService.logout()
   }
 
   login (): void {
@@ -31,11 +30,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: (data: any) => {
         localStorage.getItem('token')
-        // add router to redirect
-        // this.router.navigate(['signup']);
+        this.router.navigate(['home'])
       },
       error: err => {
-        console.log(err)
+        throw new Error(err)
       }
     })
   }
