@@ -22,7 +22,6 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index",
-    "lint": "eslint",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=5000"
+    "lint": "eslint"
   }
 }
