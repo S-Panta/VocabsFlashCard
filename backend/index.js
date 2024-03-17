@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const authRoute = require('./routes/authRoute')
+const flashCardRoute = require('./routes/flashCardRoute')
 const swaggerUi = require('swagger-ui-express')
 const specs = require('./swagger')
 
@@ -16,6 +17,7 @@ app.use(cors())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.use(express.json())
 app.use(authRoute)
+app.use(flashCardRoute)
 
 mongoose.connect(dbURI)
   .then(() => {
