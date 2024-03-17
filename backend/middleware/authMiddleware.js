@@ -4,7 +4,11 @@ require('dotenv').config()
 const secretKey = process.env.SECRET_KEY
 const authenticateMiddleware = (req, res, next) => {
   // when passing token as Bearer
-  const token = req.headers.authorization.split(' ')[1]
+  const authHeader = req.headers.authorization
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Authorization header missing or invalid' })
+  }
+  const token = authHeader.split(' ')[1]
   if (!token) {
     return res.status(401).send('Access Denied.')
   } else {

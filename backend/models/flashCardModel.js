@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const flashCardModel = new mongoose.Schema({
+const flashCardSchema = new mongoose.Schema({
   id: { type: Number, required: true },
   word: { type: String, required: true },
   meaning: { type: String, required: true },
@@ -14,5 +14,5 @@ const flashCardModel = new mongoose.Schema({
 })
 
 // eslint-disable-next-line new-cap
-const FlashCardModel = new mongoose.model('vocabulary', flashCardModel)
-module.exports = FlashCardModel
+const FlashCard = new mongoose.model('vocabulary', flashCardSchema)
+module.exports = FlashCard
