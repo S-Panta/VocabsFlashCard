@@ -27,12 +27,45 @@ const generateToken = (user) => {
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         username:
+ *           type: string
+ *         password:
+ *           type: string
+ *
  * /api/login:
  *   post:
- *     description: login user
+ *     summary: Authenticate and login user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
  *     responses:
- *       200:
- *         description: Authorization token
+ *       '200':
+ *         description: Successful authentication
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Authorization:
+ *                   type: string
+ *                   description: JWT token for authorization
+ *       '401':
+ *         description: UnAuthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 const authenticateUser = async (req, res) => {
   const { username, password } = req.body
@@ -53,13 +86,50 @@ const authenticateUser = async (req, res) => {
 
 /**
  * @swagger
- * /api/signup:
+ * components:
+ *   schemas:
+ *     NewUser:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *         username:
+ *           type: string
+ *         password:
+ *           type: string
+ *     Error:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
+ *
+ * /api/register:
  *   post:
- *     description: signup new user
+ *     summary: Register a new user
+ *     description: Register a new user with username, email, and password.
+ *     tags:
+ *       - User
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/NewUser'
  *     responses:
- *       201:
- *         description: Created
+ *       '201':
+ *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NewUser'
+ *       '403':
+ *         description: Error creating user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
+
 const registerNewUser = async (req, res) => {
   const { username, email, password } = req.body
   try {
