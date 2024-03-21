@@ -7,14 +7,12 @@ const secretKey = process.env.SECRET_KEY
 
 const getErrorMessage = (error) => {
   const errors = { }
-  // signup validation
   if (error.name === 'ValidationError') {
     const errorMessages = Object.values(error.errors).map(value => value.properties)
     errorMessages.forEach((value) => {
       errors[value.path] = value.message
     })
   }
-  // Duplicate Key Error
   if (error.code === 11000) {
     errors.message = 'User is already registered'
   }
@@ -129,7 +127,6 @@ const authenticateUser = async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-
 const registerNewUser = async (req, res) => {
   const { username, email, password } = req.body
   try {
