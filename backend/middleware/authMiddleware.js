@@ -22,6 +22,10 @@ const authenticateMiddleware = (req, res, next) => {
     }
   }
 }
+
+const checkAdminMiddleWare = (req,res) =>{
+
+}
 const checkAuthMiddleWare = (req, res) => {
   res.sendStatus(200).send('User found')
 }
