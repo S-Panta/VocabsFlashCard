@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const { authenticateMiddleware } = require('../middleware/authMiddleware')
+const { authenticateMiddleware,checkAdminMiddleWare } = require('../middleware/authMiddleware')
 const { updateStatusToFlashCard, getFlashCard,getAllFlashCards } = require('../controllers/flashCardController')
 
 router.get('/api/flashcards/:id', authenticateMiddleware, getFlashCard)
@@ -9,7 +9,7 @@ router.put('/api/flashcards/:id/update', authenticateMiddleware, updateStatusToF
 
 //flashcard routes for admin user
 // create new flashcard, delete flashcard, update flashcard, get
-router.get('/api/admin/flashcards',authenticateMiddleware,getAllFlashCards)
+router.get('/api/admin/flashcards',authenticateMiddleware,checkAdminMiddleWare,getAllFlashCards)
 // router.post('/api/admin/')
 
 module.exports = router

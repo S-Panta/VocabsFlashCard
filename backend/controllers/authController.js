@@ -19,8 +19,8 @@ const getErrorMessage = (error) => {
   return errors
 }
 
-const generateToken = (user) => {
-  return jwt.sign({ user }, secretKey, { expiresIn: '1h' })
+const generateToken = (userId, userRole) => {
+  return jwt.sign({ userId,userRole }, secretKey, { expiresIn: '1h' })
 }
 
 /**
@@ -38,6 +38,8 @@ const generateToken = (user) => {
  * /api/login:
  *   post:
  *     summary: Authenticate and login user
+ *     tags:
+ *       - Login
  *     requestBody:
  *       required: true
  *       content:
@@ -71,7 +73,7 @@ const authenticateUser = async (req, res) => {
   if (validateUser) {
     const validatePassword = await bcrypt.compare(password, validateUser.password)
     if (validatePassword) {
-      const token = generateToken(validateUser._id)
+      const token = generateToken(validateUser._id,validateUser.role)
       res.header('Authorization', token).send({ Authorization: token })
       // console.log(res.get('Authorization'))
     } else {
@@ -95,6 +97,8 @@ const authenticateUser = async (req, res) => {
  *           type: string
  *         password:
  *           type: string
+ *         role:
+ *            type: string
  *     Error:
  *       type: object
  *       properties:
@@ -104,9 +108,9 @@ const authenticateUser = async (req, res) => {
  * /api/register:
  *   post:
  *     summary: Register a new user
- *     description: Register a new user with username, email, and password.
+ *     description: Register new user with username, email, password and role.
  *     tags:
- *       - User
+ *       - Register
  *     requestBody:
  *       required: true
  *       content:
@@ -128,12 +132,13 @@ const authenticateUser = async (req, res) => {
  *               $ref: '#/components/schemas/Error'
  */
 const registerNewUser = async (req, res) => {
-  const { username, email, password } = req.body
+  const { username, email, password,role } = req.body
   try {
     const user = await User.create({
       username,
       email,
-      password
+      password,
+      role
     })
     res.status(201).json(user)
   } catch (err) {
