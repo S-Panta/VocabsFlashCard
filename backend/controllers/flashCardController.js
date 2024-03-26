@@ -27,12 +27,12 @@ const getFlashCard = async (req, res) => {
   }
 }
 
-const getAllFlashCards = async(req,res) =>{
-  try{
+const getAllFlashCards = async (req, res) => {
+  try {
     const flashCards = await FlashCard.find({})
     res.status(200).json(flashCards)
-  } catch(err){
+  } catch (err) {
     res.status(500).json({ error: 'Internal Server Error' })
   }
 }
-module.exports = { updateStatusToFlashCard, getFlashCard ,getAllFlashCards}
+module.exports = { updateStatusToFlashCard, getFlashCard, getAllFlashCards }

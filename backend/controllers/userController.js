@@ -20,7 +20,7 @@ const getErrorMessage = (error) => {
 }
 
 const generateToken = (userId, userRole) => {
-  return jwt.sign({ userId,userRole }, secretKey, { expiresIn: '1h' })
+  return jwt.sign({ userId, userRole }, secretKey, { expiresIn: '1h' })
 }
 
 /**
@@ -39,7 +39,7 @@ const generateToken = (userId, userRole) => {
  *   post:
  *     summary: Authenticate and login user
  *     tags:
- *       - Login
+ *       - User
  *     requestBody:
  *       required: true
  *       content:
@@ -73,7 +73,7 @@ const authenticateUser = async (req, res) => {
   if (validateUser) {
     const validatePassword = await bcrypt.compare(password, validateUser.password)
     if (validatePassword) {
-      const token = generateToken(validateUser._id,validateUser.role)
+      const token = generateToken(validateUser._id, validateUser.role)
       res.header('Authorization', token).send({ Authorization: token })
       // console.log(res.get('Authorization'))
     } else {
@@ -110,7 +110,7 @@ const authenticateUser = async (req, res) => {
  *     summary: Register a new user
  *     description: Register new user with username, email, password and role.
  *     tags:
- *       - Register
+ *       - User
  *     requestBody:
  *       required: true
  *       content:
@@ -132,7 +132,7 @@ const authenticateUser = async (req, res) => {
  *               $ref: '#/components/schemas/Error'
  */
 const registerNewUser = async (req, res) => {
-  const { username, email, password,role } = req.body
+  const { username, email, password, role } = req.body
   try {
     const user = await User.create({
       username,
@@ -146,7 +146,38 @@ const registerNewUser = async (req, res) => {
   }
 }
 
+/**
+ * @swagger
+ * /api/admin/users:
+ *   post:
+ *     summary: Return list of users
+ *     description: Return list of  user with username, email, password and role.
+ *     tags:
+ *       - User
+ *     responses:
+ *       '200':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/NewUser'
+ *       '500':
+ *          content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+const getAllUsers = async (req, res) => {
+  try {
+    // exclude admin users
+    const response = await User.find({ role: { $ne: 'admin' } })
+    res.status(200).json(response)
+  } catch (err) {
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+
 module.exports = {
   authenticateUser,
-  registerNewUser
+  registerNewUser,
+  getAllUsers
 }
