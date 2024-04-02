@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const FlashCard = require('../models/flashCardModel')
 require('dotenv').config()
 
 const secretKey = process.env.SECRET_KEY
@@ -148,29 +149,122 @@ const registerNewUser = async (req, res) => {
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     CreatedUser:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *         username:
+ *           type: string
+ *         role:
+ *            type: string
  * /api/admin/users:
- *   post:
+ *   get:
  *     summary: Return list of users
- *     description: Return list of  user with username, email, password and role.
+ *     description: Return list of  user with username, email and role.
  *     tags:
- *       - User
+ *       - Admin
  *     responses:
  *       '200':
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/NewUser'
+ *               $ref: '#/components/schemas/CreatedUser'
  *       '500':
  *          content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
+
 const getAllUsers = async (req, res) => {
   try {
     // exclude admin users
-    const response = await User.find({ role: { $ne: 'admin' } })
+    const response = await User.find({ role: { $ne: 'admin' } }).select('username email role')
     res.status(200).json(response)
+  } catch (err) {
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+
+/**
+ * @swagger
+ * /api/admin/users/{username}:
+ *   get:
+ *     summary: Return a user
+ *     description: Return user with username, email,and role.
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Username of the user to retrieve
+ *     tags:
+ *       - Admin
+ *     responses:
+ *       '200':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CreatedUser'
+ *       '500':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
+const getUserByName = async (req, res) => {
+  const userName = req.params.username
+  try {
+    const response = await User.findOne({ username: userName }).select('username email role')
+    if (!response) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+    res.status(200).json(response)
+  } catch (err) {
+    res.status(401).json({ error: 'User not found' })
+  }
+}
+
+/**
+ * @swagger
+ * /api/admin/users/{username}:
+ *   delete:
+ *     summary: Delete a user by it's username
+ *     description: Delete a user.
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Username of the user to delete
+ *     tags:
+ *       - Admin
+ *     responses:
+ *       '204':
+ *         content:
+ *           application/json:
+ *             schema:
+ *       '500':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+const deleteUser = async (req, res) => {
+  const userName = req.params.username
+  console.log(userName)
+  try {
+    const response = await User.findOneAndDelete({ username: userName })
+    if (!response) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+    res.status(204).json({ message: 'User deleted successfully' })
   } catch (err) {
     res.status(500).json({ error: 'Internal Server Error' })
   }
@@ -179,5 +273,7 @@ const getAllUsers = async (req, res) => {
 module.exports = {
   authenticateUser,
   registerNewUser,
-  getAllUsers
+  getAllUsers,
+  getUserByName,
+  deleteUser
 }
