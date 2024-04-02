@@ -17,7 +17,7 @@ const updateStatusToFlashCard = async (req, res) => {
 }
 
 // get flashcard by id
-const getFlashCards = async (req, res) => {
+const getFlashCard = async (req, res) => {
   const flashCardId = req.params.id
   try {
     const flashCard = await FlashCard.findOne({ id: flashCardId })
@@ -27,4 +27,12 @@ const getFlashCards = async (req, res) => {
   }
 }
 
-module.exports = { updateStatusToFlashCard, getFlashCards }
+const getAllFlashCards = async (req, res) => {
+  try {
+    const flashCards = await FlashCard.find({})
+    res.status(200).json(flashCards)
+  } catch (err) {
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+module.exports = { updateStatusToFlashCard, getFlashCard, getAllFlashCards }

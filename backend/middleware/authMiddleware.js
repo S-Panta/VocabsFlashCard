@@ -22,11 +22,26 @@ const authenticateMiddleware = (req, res, next) => {
     }
   }
 }
-const checkAuthMiddleWare = (req, res) => {
-  res.sendStatus(200).send('User found')
+
+const checkAdminMiddleWare = (req, res, next) => {
+  const authHeader = req.headers.authorization
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Authorization header missing or invalid' })
+  }
+  const token = authHeader.split(' ')[1]
+  if (!token) {
+    return res.status(401).send('Unauthorized')
+  } else {
+    try {
+      const decoded = jwt.verify(token, secretKey)
+      if (decoded.userRole === 'admin') { next() } else { res.status(400).send('UnAuthorized Route') }
+    } catch (error) {
+      res.status(400).send('Invalid Token.')
+    }
+  }
 }
 
 module.exports = {
   authenticateMiddleware,
-  checkAuthMiddleWare
+  checkAdminMiddleWare
 }
