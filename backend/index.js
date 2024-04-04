@@ -12,7 +12,7 @@ const port = process.env.PORT
 const dbURI = process.env.dbURI
 
 const app = express()
-// series of middleware used in this app
+
 app.use(cors())
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.use(express.json())

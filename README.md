@@ -18,7 +18,7 @@ The example sentences are drawn from highly curated Puritan works or using vario
 cd frontend && npm install
 cd backend && npm install
 ```
-3. Start frontend and backend server using `npm run start` and `npm run dev` respectively.
+1. Start frontend and backend server using `npm run start` and `npm run dev` respectively.
 
 ## Configuration
 Create env file with dbURI for Mongodb and Secret key for Jwt Token.
