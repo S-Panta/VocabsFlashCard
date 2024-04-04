@@ -15,10 +15,9 @@ The example sentences are drawn from highly curated Puritan works or using vario
 1. Clone the repository
 2. Install dependencies
 ```
-cd frontend && npm install
-cd backend && npm install
+npm install
 ```
-1. Start server using `npm run start` and `npm run dev` respectively.
+1. Start server using `npm run dev` respectively.
 
 ## Configuration
 Create env file with dbURI for Mongodb and Secret key for Jwt Token.
