@@ -1,7 +1,6 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const FlashCard = require('../models/flashCardModel')
 require('dotenv').config()
 
 const secretKey = process.env.SECRET_KEY
@@ -70,6 +69,7 @@ const generateToken = (userId, userRole) => {
  */
 const authenticateUser = async (req, res) => {
   const { username, password } = req.body
+  console.log(req.body)
   const validateUser = await User.findOne({ username })
   if (validateUser) {
     const validatePassword = await bcrypt.compare(password, validateUser.password)

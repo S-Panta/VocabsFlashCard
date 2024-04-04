@@ -3,7 +3,7 @@ const { authenticateUser, registerNewUser, getAllUsers, getUserByName, deleteUse
 const { authenticateMiddleware, checkAdminMiddleWare } = require('../middleware/authMiddleware')
 const router = Router()
 
-router.post('/api/login', authenticateUser)
+router.post('/login', authenticateUser)
 router.post('/api/signup', registerNewUser)
 
 // routes related to admin and user
