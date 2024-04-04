@@ -3,7 +3,8 @@ const router = Router()
 const { authenticateMiddleware, checkAdminMiddleWare } = require('../middleware/authMiddleware')
 const { updateStatusToFlashCard, getFlashCard, getAllFlashCards } = require('../controllers/flashCardController')
 
-router.get('/api/flashcards/:id', authenticateMiddleware, getFlashCard)
+router.get('/api/flashcards/:id', getFlashCard)
+// router.get('/api/flashcards/:id', authenticateMiddleware, getFlashCard)
 router.get('/api/flashcards', authenticateMiddleware, getAllFlashCards)
 router.put('/api/flashcards/:id/update', authenticateMiddleware, updateStatusToFlashCard)
 
