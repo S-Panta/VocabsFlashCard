@@ -15,9 +15,10 @@ The example sentences are drawn from highly curated Puritan works or using vario
 1. Clone the repository
 2. Install dependencies
 ```
-npm install
+cd frontend && npm install
+cd backend && npm install
 ```
-1. Start server using `npm run dev` respectively.
+3. Start frontend and backend server using `npm run start` and `npm run dev` respectively.
 
 ## Configuration
 Create env file with dbURI for Mongodb and Secret key for Jwt Token.
@@ -27,6 +28,7 @@ This can be found in url `http://localhost:3000/api-docs`
 
 ## Technologies Used
 
+- **Frontend**: Angular
 - **Backend**:Express.js
 - **Database**: MongoDB
 - **Authentication**: JSON Web Tokens (JWT)
