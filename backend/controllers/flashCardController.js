@@ -12,7 +12,7 @@ const updateStatusToFlashCard = async (req, res) => {
       })
     res.status(200).send('Status updated Successfully')
   } catch (err) {
-    res.status(401).json({ error: 'Request failed' })
+    res.status(304).json({ error: 'Resource Not Modified' })
   }
 }
 
@@ -20,6 +20,8 @@ const updateStatusToFlashCard = async (req, res) => {
 const getFlashCard = async (req, res) => {
   const flashCardId = req.params.id
   try {
+    // findOne() returns a document, or null
+    // find() returns a cursor, which can be empty. But the object returned is always defined.
     const flashCard = await FlashCard.findOne({ id: flashCardId })
     res.status(200).json(flashCard)
   } catch (err) {
