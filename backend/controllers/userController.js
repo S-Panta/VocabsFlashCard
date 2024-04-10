@@ -24,50 +24,6 @@ const generateToken = (userId, userRole) => {
   return jwt.sign({ userId, userRole }, secretKey, { expiresIn: '1h' })
 }
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         username:
- *           type: string
- *         password:
- *           type: string
- *
- * /api/login:
- *   post:
- *     summary: Authenticate and login user
- *     tags:
- *       - User
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       '200':
- *         description: Successful authentication
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 Authorization:
- *                   type: string
- *                   description: JWT token for authorization
- *       '401':
- *         description: UnAuthorized
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- */
 const authenticateUser = async (req, res) => {
   const { username, password } = req.body
   const validateUser = await User.findOne({ username })
@@ -85,53 +41,6 @@ const authenticateUser = async (req, res) => {
   }
 }
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     NewUser:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *         username:
- *           type: string
- *         password:
- *           type: string
- *         role:
- *            type: string
- *     Error:
- *       type: object
- *       properties:
- *         error:
- *           type: string
- *
- * /api/register:
- *   post:
- *     summary: Register a new user
- *     description: Register new user with username, email, password and role.
- *     tags:
- *       - User
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/NewUser'
- *     responses:
- *       '201':
- *         description: User created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/NewUser'
- *       '403':
- *         description: Error creating user
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- */
 const registerNewUser = async (req, res) => {
   const { username, email, password, role } = req.body
   try {
@@ -147,38 +56,6 @@ const registerNewUser = async (req, res) => {
   }
 }
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     CreatedUser:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *         username:
- *           type: string
- *         role:
- *            type: string
- * /api/admin/users:
- *   get:
- *     summary: Return list of users
- *     description: Return list of  user with username, email and role.
- *     tags:
- *       - Admin
- *     responses:
- *       '200':
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/CreatedUser'
- *       '500':
- *          content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- */
-
 const getAllUsers = async (req, res) => {
   try {
     // exclude admin users
@@ -188,34 +65,6 @@ const getAllUsers = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' })
   }
 }
-
-/**
- * @swagger
- * /api/admin/users/{username}:
- *   get:
- *     summary: Return a user
- *     description: Return user with username, email,and role.
- *     parameters:
- *       - in: path
- *         name: username
- *         schema:
- *           type: string
- *         required: true
- *         description: Username of the user to retrieve
- *     tags:
- *       - Admin
- *     responses:
- *       '200':
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/CreatedUser'
- *       '500':
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- */
 
 const getUserByName = async (req, res) => {
   const userName = req.params.username
@@ -230,32 +79,6 @@ const getUserByName = async (req, res) => {
   }
 }
 
-/**
- * @swagger
- * /api/admin/users/{username}:
- *   delete:
- *     summary: Delete a user by it's username
- *     description: Delete a user.
- *     parameters:
- *       - in: path
- *         name: username
- *         schema:
- *           type: string
- *         required: true
- *         description: Username of the user to delete
- *     tags:
- *       - Admin
- *     responses:
- *       '204':
- *         content:
- *           application/json:
- *             schema:
- *       '500':
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- */
 const deleteUser = async (req, res) => {
   const userName = req.params.username
   console.log(userName)

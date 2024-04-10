@@ -5,7 +5,7 @@ const { updateStatusToFlashCard, getFlashCard, getAllFlashCards } = require('../
 
 router.get('/api/flashcards/:id', authenticateMiddleware, getFlashCard)
 router.get('/api/flashcards', authenticateMiddleware, getAllFlashCards)
-router.put('/api/flashcards/:id/update', authenticateMiddleware, updateStatusToFlashCard)
+router.patch('/api/flashcards/:id/update', authenticateMiddleware, updateStatusToFlashCard)
 
 // flashcard routes for admin user
 // create new flashcard, delete flashcard, update flashcard, get
