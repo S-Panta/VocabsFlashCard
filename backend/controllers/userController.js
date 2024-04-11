@@ -19,25 +19,39 @@ const getErrorMessage = (error) => {
   }
   return errors
 }
-
+const getEmptyErrorMessage = (username,password) =>{
+  if(!username){
+    return "Username cannot be empty"
+  }
+  if(!password){
+    return "Password cannot be empty"
+  }
+}
 const generateToken = (userId, userRole) => {
   return jwt.sign({ userId, userRole }, secretKey, { expiresIn: '1h' })
 }
 
 const authenticateUser = async (req, res) => {
   const { username, password } = req.body
-  const validateUser = await User.findOne({ username })
-  if (validateUser) {
-    const validatePassword = await bcrypt.compare(password, validateUser.password)
-    if (validatePassword) {
-      const token = generateToken(validateUser._id, validateUser.role)
-      res.header('Authorization', token).send({ Authorization: token })
-      // console.log(res.get('Authorization'))
-    } else {
-      res.status(401).json({ error: 'Password mismatch' })
+  try{
+    if(!username || !password){
+      throw new Error(getEmptyErrorMessage(username,password))
     }
-  } else {
-    res.status(401).json({ error: 'User not registered' })
+    const validateUser = await User.findOne({ username })
+    if (validateUser) {
+      const validatePassword = await bcrypt.compare(password, validateUser.password)
+      if (validatePassword) {
+        const token = generateToken(validateUser._id, validateUser.role)
+        res.header('Authorization', token).send({ Authorization: token })
+        // console.log(res.get('Authorization'))
+      } else {
+        res.status(401).json({ error: 'Password mismatch' })
+      }
+    } else {
+      res.status(401).json({ error: 'User not registered' })
+    }
+  } catch (error){
+    res.status(400).json({error: error.message})
   }
 }
 
