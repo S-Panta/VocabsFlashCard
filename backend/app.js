@@ -6,13 +6,14 @@ const flashCardRoute = require('./routes/flashCardRoute')
 const swaggerUi = require('swagger-ui-express')
 const fs = require("fs")
 const YAML = require('yaml')
+require('dotenv').config()
 
 const file  = fs.readFileSync("./docs/swagger.yaml", 'utf8')
 const swaggerDocument = YAML.parse(file)
-require('dotenv').config()
 
-const port = process.env.PORT
 const dbURI = process.env.dbURI
+const dbURITest = process.env.DB_URI_TEST
+const connectionUrl = process.env.NODE_ENV === 'test' ? dbURITest : dbURI
 
 const app = express()
 app.use(cors())
@@ -21,7 +22,7 @@ app.use(express.json())
 app.use(authRoute)
 app.use(flashCardRoute)
 
-mongoose.connect(dbURI)
+mongoose.connect(connectionUrl)
   .then(() => {
     console.log('Database connected')
   })
@@ -29,6 +30,4 @@ mongoose.connect(dbURI)
     console.log(err)
   })
 
-app.listen(port, () => {
-  console.log(`http://localhost:${port}`)
-})
+module.exports = app
