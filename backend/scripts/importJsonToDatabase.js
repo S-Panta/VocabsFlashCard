@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const FlashCardModel = require('../models/flashCardModel')
 const filePath = path.join(__dirname, 'vocabs.json')
+
 require('dotenv').config()
 const dbURI = process.env.dbURI
 const mongoose = require('mongoose')
