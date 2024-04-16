@@ -26,6 +26,6 @@
     "start": "node server",
     "dev": "nodemon server",
     "lint": "eslint",
-    "test": "NODE_ENV=test jest"
+    "test": "SET NODE_ENV=test & jest"
   }
 }

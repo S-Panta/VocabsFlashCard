@@ -22,12 +22,4 @@ app.use(express.json())
 app.use(authRoute)
 app.use(flashCardRoute)
 
-mongoose.connect(connectionUrl)
-  .then(() => {
-    console.log('Database connected')
-  })
-  .catch((err) => {
-    console.log(err)
-  })
-
 module.exports = app
