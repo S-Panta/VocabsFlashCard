@@ -1,9 +1,15 @@
-require('dotenv').config()
+
 const app = require('../../app')
 const request = require('supertest')
 const mongoose = require('mongoose')
 const User = require('../../models/userModel')
 
+require('dotenv').config()
+const dbURITest = process.env.DB_URI_TEST
+
+beforeAll(async() =>{
+    await mongoose.connect(dbURITest)
+})
 
 async function clearCollections() {
     const collections = mongoose.connection.collections;

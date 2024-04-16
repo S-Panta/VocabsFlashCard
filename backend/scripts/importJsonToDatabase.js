@@ -20,14 +20,13 @@ for (const data of vocabularyData.Vocabulary) {
   const { id, word, meaning, sentence, reference } = data
   const writeToServer = async () => {
     try {
-      const response = await FlashCardModel.create({
+       await FlashCardModel.create({
         id,
         word,
         meaning,
         sentence,
         reference
       })
-      console.log(response)
     } catch (err) {
       console.log(err)
     }
