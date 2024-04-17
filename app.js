@@ -1,5 +1,5 @@
 const express = require('express')
-const mongoose = require('mongoose')
+const path = require('path')
 const cors = require('cors')
 const authRoute = require('./routes/userRoute')
 const flashCardRoute = require('./routes/flashCardRoute')
@@ -11,12 +11,14 @@ require('dotenv').config()
 const file  = fs.readFileSync("./docs/swagger.yaml", 'utf8')
 const swaggerDocument = YAML.parse(file)
 
-const dbURI = process.env.dbURI
-const dbURITest = process.env.DB_URI_TEST
-const connectionUrl = process.env.NODE_ENV === 'test' ? dbURITest : dbURI
-
 const app = express()
-app.use(cors())
+//serving static file
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs')
+app.get('/login', (req, res) => {
+    res.render('login'); // Renders the login.ejs file
+});
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.json())
 app.use(authRoute)

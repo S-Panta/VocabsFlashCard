@@ -16,9 +16,8 @@ mongoose.connect(dbURI)
         console.log(err)
     })
 
-app.get('/', (req, res) => {
-    // Send the HTML file using sendFile()
-    res.sendFile(path.join(htmlDir, 'loginPage.html'));
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
 });
 app.listen(port, () => {
     console.log(`http://localhost:${port}`)
