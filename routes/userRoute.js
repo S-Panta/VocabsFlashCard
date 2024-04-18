@@ -1,7 +1,12 @@
 const { Router } = require('express')
+const { getLoginPage,getSignupPage} = require('../controllers/viewsController')
 const { authenticateUser, registerNewUser, getAllUsers, getUserByName, deleteUser } = require('../controllers/userController')
 const { authenticateMiddleware, checkAdminMiddleWare } = require('../middleware/authMiddleware')
 const router = Router()
+
+//routes for rendering static pages
+router.get('/login',getLoginPage)
+router.get('/signup',getSignupPage)
 
 router.post('/api/login', authenticateUser)
 router.post('/api/signup', registerNewUser)
