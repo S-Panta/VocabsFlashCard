@@ -7,20 +7,24 @@
 </head>
 <body>
     <div class="center">
-        <h1>Login</h1>
-        <form method="post">
+        <h1>Signup</h1>
+        <form method="post" action = "/api/signup">
             <div class="txt-field">
-                <input type = 'text' required>
+                <input type = 'text' name="username" required>
                 <span></span>
                 <label> Username</label>
             </div>
+            <div class="txt-field">
+                <input type = 'text' name="email" required>
+                <span></span>
+                <label> Email</label>
+            </div>
 
             <div class="txt-field">
-                <input type = 'text' required>
+                <input type = 'text' name="password" required>
                 <span></span>
                 <label> Password</label>
             </div>
-            <div class="pass">Forgot Password</div>
             <input type = 'submit' value="Signup">
         </form>
     </div>
