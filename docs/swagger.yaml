@@ -1,0 +1,249 @@
+openapi: "3.0.0"
+info:
+  title: "FlashCard"
+  version: "1.0.0"
+servers:
+  - url: http://localhost:3000
+    description: Development server
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    NewUser:
+      type: object
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+
+    CreatedUser:
+      type: object
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+        role:
+          type: string
+
+    FlashCard:
+      type: object
+      properties:
+        id:
+          type: integer
+        word:
+          type: string
+        meaning:
+          type: string
+        sentence:
+          type: string
+        reference:
+          type: string
+        reviewStatus:
+          type: string
+          enum:
+            - NotReviewed
+            - Reviewed
+            - Mastered
+          default: NotReviewed
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+paths:
+  /api/login:
+    post:
+      summary: Authenticate and login user
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Authorization:
+                    type: string
+                    description: JWT token for authorization
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /api/register:
+    post:
+      summary: Register a new user
+      description: Register new user with username, email, password, and role.
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUser'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewUser'
+        '403':
+          description: Error creating user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/admin/users:
+    get:
+      summary: Return list of users
+      description: Return list of users with username, email, and role.
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedUser'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/admin/users/{username}:
+    get:
+      summary: Return a user
+      description: Return user with username, email, and role.
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: Username of the user to retrieve
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedUser'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Delete a user by it's username
+      description: Delete a user.
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: Username of the user to delete
+      tags:
+        - Admin
+      responses:
+        '204':
+          description: No content
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/flashcards/:id:
+    get:
+      summary: Get flashcard by it's id
+      description: Get a flashcard
+      parameters:
+        - in: path
+          name: flashcard id
+          schema:
+            type: string
+          required: true
+          description: flashcard id to get flashcard detail
+      tags:
+        - FlashCard
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlashCard'
+        '401':
+          description: Flashcard Not Found
+
+  /api/flashcards:
+    get:
+      summary: Get all flashcards
+      description: Get all flashcards
+      parameters:
+      tags:
+        - FlashCard
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlashCard'
+        '401':
+          description: Flashcard Not Found
+
+  /api/flashcards/:id/update:
+    patch:
+      summary: update status of flashcard
+      description: update status of flashcard by its id
+      parameters:
+        - in: path
+          name: flashcard id
+          schema:
+            type: string
+          required: true
+          description: flashcard id to update flashcard status
+      tags:
+        - FlashCard
+      responses:
+        '200':
+          description: Successful Response
+        '304':
+          description: Resource Not Modified
