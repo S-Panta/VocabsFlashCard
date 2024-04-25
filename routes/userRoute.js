@@ -4,9 +4,6 @@ const { authenticateUser, registerNewUser, getAllUsers, getUserByName, deleteUse
 const { authenticateMiddleware, checkAdminMiddleWare } = require('../middleware/authMiddleware')
 const router = Router()
 
-//routes for rendering static pages
-router.get('/login',getLoginPage)
-router.get('/signup',getSignupPage)
 
 router.post('/api/login', authenticateUser)
 router.post('/api/signup', registerNewUser)

@@ -9,8 +9,6 @@ require('dotenv').config()
 
 const app = express()
 
-//for parsing form data
-app.use(express.urlencoded({ extended: true }));
 
 //swagger docs
 const file  = fs.readFileSync("./docs/swagger.yaml", 'utf8')
