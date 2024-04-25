@@ -9,10 +9,6 @@ require('dotenv').config()
 
 const app = express()
 
-//serving static file
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'ejs')
-
 //for parsing form data
 app.use(express.urlencoded({ extended: true }));
 
