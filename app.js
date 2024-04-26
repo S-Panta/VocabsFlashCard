@@ -11,7 +11,8 @@ const app = express()
 
 
 //swagger docs
-const file  = fs.readFileSync("./docs/swagger.yaml", 'utf8')
+const filePath = path.join(process.cwd(), 'docs', 'swagger.yaml');
+const file  = fs.readFileSync(filePath, 'utf8')
 const swaggerDocument = YAML.parse(file)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.json())
