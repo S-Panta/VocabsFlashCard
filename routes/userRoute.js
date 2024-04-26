@@ -1,5 +1,4 @@
 const { Router } = require('express')
-const { getLoginPage,getSignupPage} = require('../controllers/viewsController')
 const { authenticateUser, registerNewUser, getAllUsers, getUserByName, deleteUser } = require('../controllers/userController')
 const { authenticateMiddleware, checkAdminMiddleWare } = require('../middleware/authMiddleware')
 const router = Router()
