@@ -18,6 +18,13 @@ const swaggerDocument = YAML.parse(file)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.json())
 
+// Serve Angular app from 'dist' folder
+app.use(express.static('dist/browser'));
+
+// Catch all other routes and return the Angular app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/browser', 'index.html'));
+});
 //middleware for routes
 app.use(cors())
 app.use(authRoute)
