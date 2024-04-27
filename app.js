@@ -19,6 +19,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.json())
 
 // Serve Angular app from 'dist' folder
+app.use(cors())
 app.use(express.static('dist/browser'));
 
 app.get(['/login','/home', '/signup'], (req, res) => {
@@ -26,7 +27,7 @@ app.get(['/login','/home', '/signup'], (req, res) => {
 });
 
 //middleware for routes
-app.use(cors())
+
 app.use(authRoute)
 app.use(flashCardRoute)
 
