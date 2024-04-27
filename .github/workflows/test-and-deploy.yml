@@ -1,6 +1,9 @@
 name: Build and Deploy
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -21,7 +24,14 @@ jobs:
         run: npm install
 
       - name: Run jest
-        run: npm test
+        run:
+          export MONGO_URI="${{ secrets.MONGO_URI }}"
+          export JWT_SECRET="${{ secrets.JWT_SECRET }}"
+          npm test
+
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -36,10 +46,9 @@ jobs:
 
       - name: Install Angular CLI
         run: cd frontend && npm install -g @angular/cli
+      
+      - name: Install dependencies
+        run: cd frontend && npm install && npm install tailwindcss postcss autoprefixer
 
       - name: Install and build angular app
-        run: npm install && ng build --output-path=../dist 
-
-      - name: Deploy to Railway
-        run: |
-          # Commands to deploy the contents of the dist folder to Railway
+        run: cd frontend && ng build --output-path=../dist 
