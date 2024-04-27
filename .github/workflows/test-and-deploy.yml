@@ -1,0 +1,57 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: --name mongodb
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run jest
+        run: export MONGO_URI="${{ secrets.MONGO_URI }}"
+             export JWT_SECRET="${{ secrets.JWT_SECRET }}"
+             npm test
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install Angular CLI
+        run: cd frontend && npm install -g @angular/cli
+
+      - name: Install and build angular app
+        run: npm install && ng build --output-path=../dist 
+
+      - name: Deploy to Railway
+        run: |
+          # Commands to deploy the contents of the dist folder to Railway
