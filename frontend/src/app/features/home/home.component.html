@@ -1,1 +1,20 @@
-<button (click)="logout()">Signout</button>
+<div class="flashcard-container">
+    <div class="flashcard" [class.flipped]="isFlipped" (click)="toggleCard()">
+      <div class="card-front">
+        <h2>{{ term }}</h2>
+        <button class="btn-flip"></button>
+      </div>
+      <div class="card-back">
+        <p>{{ meaning }}</p><br>
+        <p>{{ sentence }}</p><br>
+        <p>{{ reference }}</p>
+    </div>
+    
+    </div>
+    <div class="navigation-buttons">
+      <button (click)="showPreviousCard()">Previous</button>
+      <button (click)="showNextCard()">Next</button>
+    </div>
+  </div>
+  
+  
