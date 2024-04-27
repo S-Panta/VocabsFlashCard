@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import { Injectable } from '@angular/core'
 import { throwError, type Observable } from 'rxjs'
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'

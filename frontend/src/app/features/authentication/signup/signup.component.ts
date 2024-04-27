@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import { Component, OnInit } from '@angular/core'
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms'
 import { AuthService } from '../../../api/services/auth.service'
