@@ -32,3 +32,23 @@ jobs:
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install Angular CLI
+        run: cd frontend && npm install -g @angular/cli
+      
+      - name: Install dependencies
+        run: cd frontend && npm install && npm install tailwindcss postcss autoprefixer
+
+      - name: Install and build angular app
+        run: cd frontend && ng build --output-path=../dist 
