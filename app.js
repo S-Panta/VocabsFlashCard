@@ -6,10 +6,10 @@ const swaggerUi = require('swagger-ui-express')
 const fs = require("fs")
 const YAML = require('yaml')
 const cors = require('cors');
+const bodyParser = require('body-parser');
 require('dotenv').config()
 
 const app = express()
-
 
 //swagger docs
 const filePath = path.join(process.cwd(), 'docs', 'swagger.yaml');
@@ -19,6 +19,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.json())
 
 // Serve Angular app from 'dist' folder
+
 app.use(cors())
 app.use(express.static('dist/browser'));
 

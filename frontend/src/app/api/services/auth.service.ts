@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core'
 import { throwError, type Observable } from 'rxjs'
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { catchError, tap } from 'rxjs/operators'
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  private readonly url = 'http://localhost:3000/api'
+  private readonly url = environment.apiUrl;
 
   constructor (private readonly http: HttpClient) {
   }
