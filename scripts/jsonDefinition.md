@@ -1,4 +1,15 @@
-//word to write vocabulary
+abound
+amorphous
+austere
+belie
+capricious
+cerebral
+congenial
+conspicuous
+cursory
+daunting
+deify
+didactic
 disseminate
 feasible
 flout
